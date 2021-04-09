@@ -6,7 +6,7 @@ import {
   labelsRef
 } from "../main";
 
-import { downTaskList, downGroupList } from "./statCollection";
+import { downTask, downGroup } from "./statCollection";
 
 export function boardsList(project) {
   boardsRef
@@ -39,7 +39,7 @@ export function groupsList(board, project) {
     .then(function(groupSnapshot) {
       groupSnapshot.forEach(group => {
         tasksList(group, project);
-        downGroupList(project, group.ref);
+        downGroup(project, group.ref);
       });
     });
 }
@@ -63,7 +63,7 @@ export function tasksList(group, project) {
     .then(function(taskSnapshot) {
       taskSnapshot.forEach(task => {
         checkboxList(task);
-        downTaskList(project, task.ref);
+        downTask(project, task.ref);
       });
     });
 }
