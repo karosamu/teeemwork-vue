@@ -21,6 +21,12 @@ jobs:
       - run: npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
+          envkey_VUE_APP_API: ${{ secrets.VUE_APP_API_KEY }}
+          envkey_VUE_APP_APP_ID: ${{ secrets.VUE_APP_APP_ID }}
+          envkey_VUE_APP_AUTH_DOMAIN: ${{ secrets.VUE_APP_AUTH_DOMAIN }}
+          envkey_VUE_APP_PROJECT_ID: ${{ secrets.VUE_APP_PROJECT_ID }}
+          envkey_VUE_APP_SENDER_ID: ${{ secrets.VUE_APP_SENDER_ID }}
+          envkey_VUE_APP_STORAGE_BUCKET: ${{ secrets.VUE_APP_STORAGE_BUCKET }}
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_TEEEMWORK_VUE }}'
           projectId: teeemwork-vue
