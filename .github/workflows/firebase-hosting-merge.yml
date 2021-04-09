@@ -14,12 +14,6 @@ jobs:
       - uses: actions/checkout@v2
       - run: npm ci
       - run: npm run build
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_TEEEMWORK_VUE }}'
-          channelId: live
-          projectId: teeemwork-vue
         env:
           VUE_APP_API_KEY: ${{ secrets.VUE_APP_API_KEY }}
           VUE_APP_APP_ID: ${{ secrets.VUE_APP_APP_ID }}
@@ -27,4 +21,11 @@ jobs:
           VUE_APP_PROJECT_ID: ${{ secrets.VUE_APP_PROJECT_ID }}
           VUE_APP_SENDER_ID: ${{ secrets.VUE_APP_SENDER_ID }}
           VUE_APP_STORAGE_BUCKET: ${{ secrets.VUE_APP_STORAGE_BUCKET }}
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_TEEEMWORK_VUE }}'
+          channelId: live
+          projectId: teeemwork-vue
+        env:
           FIREBASE_CLI_PREVIEWS: hostingchannels
