@@ -281,6 +281,7 @@ export default {
             board: this.$route.params.boardid,
             project: this.$route.params.projectid,
             order: this.tasks.length,
+            asignee: firebase.auth().currentUser.uid,
             labels: [],
             description: ""
           })

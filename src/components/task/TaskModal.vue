@@ -38,7 +38,6 @@
                 ref="editAsignee"
                 v-model="editAsignee"
                 class="edit-input"
-                minlength="1"
                 v-on="listenersAsignee"
               />
             </form>
@@ -229,19 +228,18 @@ export default {
       let user = this.users.find(obj => {
         return obj.email === this.editAsignee;
       });
-      if(user) {
+      if((user && this.task.asignee !== user.id) || this.editAsignee == "") {
         if (
-          this.editAsignee.length <= 300 &&
-          this.task.asignee !== user.id
+          this.editAsignee.length <= 300
         ) {
           tasksRef
             .doc(this.task.id)
             .update({
-              asignee: user.id
+              asignee: user ? user.id : ""
             })
             .then(() => {
               log(
-                `Changed ${this.task.name} asignee to ${user.email}`,
+                `Changed ${this.task.name} asignee to ${user ? user.email : "none"}`,
                 this.$route.params.projectid,
                 "task"
               );

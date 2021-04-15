@@ -172,19 +172,18 @@ export default {
       let user = this.users.find(obj => {
         return obj.email === this.editAsignee;
       });
-      if(user) {
+      if((user && this.checkbox.asignee !== user.id) || this.editAsignee == "") {
         if (
-          this.editAsignee.length <= 300 &&
-          this.task.asignee !== user.id
+          this.editAsignee.length <= 300
         ) {
           checkboxRef
             .doc(this.checkbox.id)
             .update({
-              asignee: user.id
+              asignee: user ? user.id : ""
             })
             .then(() => {
               log(
-                `Changed ${this.checkbox.name} asignee to ${user.email}`,
+                `Changed ${this.checkbox.name} asignee to ${user ? user.email : "none"}`,
                 this.$route.params.projectid,
                 "checkbox"
               );

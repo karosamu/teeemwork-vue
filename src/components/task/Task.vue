@@ -111,7 +111,9 @@ export default {
 
   .task-container-description {
     margin: 0 10px 10px 10px;
-    color: gray;
+    color: var(--foreground);
+    transition: var(--animation-duration);
+    opacity: 70%;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
