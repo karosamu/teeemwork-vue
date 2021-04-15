@@ -158,7 +158,7 @@ export default {
   }
   &::-webkit-color-swatch {
     border: none;
-    border-radius: 8px;
+    border-radius: var(--corner-radius);
   }
 }
 </style>

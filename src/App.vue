@@ -51,14 +51,16 @@ export default {
   --foreground: #1b1b1b;
   --accent-1: #7c9473;
   --accent-2: #646e64;
+  --accent-hover: #afd1a2;
 
   /* other variables */
   --animation-duration: 0.1s;
   --margin: 10px;
   --padding: 10px;
+  --corner-radius: 3px;
 
   /* scrollbar */
-  --scrollbar-color: #7c9473;
+  --scrollbar-color: var(--accent-1);
 
   /* task */
   --task-background: var(--background);
@@ -97,19 +99,9 @@ export default {
 
 [theme="dark"] {
   /* main colors */
-  --background: #414141;
-  --background-2: #4e4e4e;
+  --background: #313131;
+  --background-2: #414141;
   --foreground: #fefefe;
-  --accent-1: #7c9473;
-  --accent-2: #646e64;
-
-  /* other variables */
-  --animation-duration: 0.1s;
-  --margin: 10px;
-  --padding: 10px;
-
-  /* scrollbar */
-  --scrollbar-color: #7c9473;
 
   /* task */
   --task-background: var(--background);
@@ -172,7 +164,7 @@ body {
 
 .box-shadow {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
+  border-radius: var(--corner-radius);
 }
 
 .animate {
@@ -212,7 +204,7 @@ body {
     transition: var(--animation-duration);
 
     &:hover {
-      color: var(--accent-1);
+      color: var(--accent-hover);
       transition: var(--animation-duration);
     }
 
@@ -240,7 +232,7 @@ body {
 
 .scrollbar::-webkit-scrollbar-track {
   background-color: #ffffff00;
-  border-radius: 5px;
+  border-radius: var(--corner-radius);
   transition: var(--animation-duration);
 }
 
@@ -464,6 +456,7 @@ body {
     outline: none;
   }
 }
+
 .form-underline {
   input {
     border-bottom: 1px solid var(--foreground);
@@ -485,7 +478,7 @@ body {
 
 .toasted-container .toasted.custom-toast-error {
   padding: 16px;
-  border-radius: 5px;
+  border-radius: var(--corner-radius);
   background: #f8d7da;
   color: #721c24;
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -497,13 +490,13 @@ body {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   color: #721c24;
   margin: 0 0 0 0.8rem;
-  border-radius: 5px;
+  border-radius: var(--corner-radius);
   padding: 0;
 }
 
 .toasted-container .toasted.custom-toast-info {
   padding: 16px;
-  border-radius: 5px;
+  border-radius: var(--corner-radius);
   background: #cce5ff;
   color: #004085;
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -515,13 +508,13 @@ body {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   color: #004085;
   margin: 0 0 0 0.8rem;
-  border-radius: 5px;
+  border-radius: var(--corner-radius);
   padding: 0;
 }
 
 .toasted-container .toasted.custom-toast-success {
   padding: 16px;
-  border-radius: 5px;
+  border-radius: var(--corner-radius);
   background: #d4edda;
   color: #155724;
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -533,7 +526,14 @@ body {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   color: #155724;
   margin: 0 0 0 0.8rem;
-  border-radius: 5px;
+  border-radius: var(--corner-radius);
   padding: 0;
+}
+
+.linkified {
+  color: var(--foreground) !important;
+  text-decoration: none;
+  font-weight: bold;
+  font-family: monospace;
 }
 </style>

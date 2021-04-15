@@ -46,7 +46,7 @@ export default {
   box-shadow: inset 5px 5px 10px 0 rgba(0, 0, 0, 0.1);
   position: absolute;
   top: 0;
-  border-radius: 5px;
+  border-radius: var(--corner-radius);
   width: 100%;
   height: 100%;
   pointer-events: none;

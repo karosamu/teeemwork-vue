@@ -275,7 +275,7 @@ export default {
 
 .project-link:hover {
   .icon {
-    background-color: var(--accent-1);
+    background-color: var(--accent-hover);
   }
 }
 
@@ -291,7 +291,6 @@ export default {
   height: 30px;
   margin-right: 10px;
   margin-left: 8px;
-  border-radius: 5px;
 }
 
 .new-board-input {

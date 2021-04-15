@@ -200,7 +200,7 @@ export default {
   }
   &::-webkit-color-swatch {
     border: none;
-    border-radius: 8px;
+    border-radius: var(--corner-radius);
   }
 }
 
@@ -224,15 +224,6 @@ export default {
       width: 100%;
     }
   }
-}
-
-.label-color {
-  height: 40px;
-  width: 40px;
-  margin-bottom: 2px;
-  margin-right: 10px;
-  border-radius: 10px;
-  transition: var(--animation-duration);
 }
 
 .project-label-container {

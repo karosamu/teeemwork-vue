@@ -25,6 +25,25 @@
               v-on="listenersName"
             />
           </form>
+          <div class="asignee">
+            <span class="text">Assigned user:</span>
+            <div @click="editAsigneeClick" v-if="!task.asignee && !editingAsignee" class="text"><div class="icon plus"></div>User</div>
+            <div @click="editAsigneeClick" v-if="task.asignee && !editingAsignee" class="text asignee-text">- {{asigneeInfo.name}} {{asigneeInfo.surname}}</div>
+            <form
+              class="edit-form nondrag asignee-edit-form"
+              @submit.prevent="submitAsignee"
+            >
+              <input
+                v-if="editingAsignee"
+                ref="editAsignee"
+                v-model="editAsignee"
+                class="edit-input"
+                minlength="1"
+                v-on="listenersAsignee"
+              />
+            </form>
+          </div>
+          
         </div>
         <div class="spacer"></div>
         <div class="description-container">
@@ -85,7 +104,7 @@
           </button>
         </div>
       </div>
-      <CheckboxList class="checkbox-list-component" :task="task" />
+      <CheckboxList :checkboxes="checkboxes" class="checkbox-list-component" :task="task" />
       <TaskLabelList :task="task" :labels="task.labels" />
     </div>
   </div>
@@ -106,6 +125,12 @@ export default {
   components: { CheckboxList, TaskLabelList },
   mixins: [mixinAutoResize],
   props: {
+    checkboxes: {
+      ype: Object,
+      default: () => {
+        return {};
+      }
+    },
     task: {
       type: Object,
       default: () => {
@@ -123,20 +148,31 @@ export default {
       editingDescription: false,
       editTaskName: "",
       editTaskDescription: "",
-      inputActive: false
+      inputActive: false,
+      editingAsignee: false,
+      editAsignee: ""
     };
   },
   computed: {
-    ...mapState(["projects"]),
+    ...mapState(["projects", "users"]),
+    asigneeInfo() {
+      return this.users.find(x => x.id === this.task.asignee);
+    },
     listenersDescription() {
-      if (!this.inputActive) {
+      if (this.inputActive) {
         return { blur: this.submitEditDescription };
       }
       return null;
     },
     listenersName() {
-      if (!this.inputActive) {
+      if (this.inputActive) {
         return { blur: this.submitEdit };
+      }
+      return null;
+    },
+    listenersAsignee() {
+      if (this.inputActive) {
+        return { blur: this.submitAsignee };
       }
       return null;
     },
@@ -172,9 +208,53 @@ export default {
         originalSelectionStart = event.target.selectionStart,
         textStart = text.slice(0, originalSelectionStart),
         textEnd = text.slice(originalSelectionStart);
-      this.editTaskDescription = `${textStart}\t${textEnd}`;
+      this.editTaskDescription = `${textStart}    ${textEnd}`;
       event.target.selectionEnd = event.target.selectionStart =
         originalSelectionStart + 1;
+    },
+    editAsigneeClick() {
+      this.inputActive = true;
+      if (this.checkIfTask || this.checkIfOwner || this.checkIfAdmin) {
+        if(this.task.asignee) this.editAsignee = this.asigneeInfo.email;
+        this.editingAsignee = !this.editingAsignee;
+        if (this.editingAsignee) {
+          this.$nextTick(() => {
+            this.$refs.editAsignee.focus();
+          });
+        }
+      }
+    },
+    submitAsignee() {
+      this.editingAsignee = false;
+      let user = this.users.find(obj => {
+        return obj.email === this.editAsignee;
+      });
+      if(user) {
+        if (
+          this.editAsignee.length <= 300 &&
+          this.task.asignee !== user.id
+        ) {
+          tasksRef
+            .doc(this.task.id)
+            .update({
+              asignee: user.id
+            })
+            .then(() => {
+              log(
+                `Changed ${this.task.name} asignee to ${user.email}`,
+                this.$route.params.projectid,
+                "task"
+              );
+              this.editAsignee = "";
+              this.inputActive = false;
+            })
+            .catch(error => {
+              this.$toasted.global.error({
+                message: error
+              });
+            });
+        }
+      }
     },
     editTask() {
       this.inputActive = true;
@@ -316,7 +396,20 @@ export default {
     background-color: var(--background);
     padding: 30px;
 
+    .asignee {
+      margin: 10px 10px 10px 0;
+      
+    }
+
+    .asignee-text {
+      color: var(--accent-1);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     .description-text {
+      font-weight: 500;
       font-family: monospace;
       font-size: 12px;
       -moz-tab-size: 2;
