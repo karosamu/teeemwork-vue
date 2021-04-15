@@ -72,9 +72,9 @@ export default {
       return this.projects.filter(
         e =>
           e.owner !== firebase.auth().currentUser.uid &&
-          (e.boards > 0 || e.allowAddBoards)
+          (e.boards > 0 || this.checkIfTask(e) || this.checkIfAdmin(e) || this.checkIfBoard(e))
       );
-    }
+    },
   },
   methods: {
     openProjectEntry() {
@@ -82,6 +82,15 @@ export default {
       this.$nextTick(() => {
         this.$refs.project.focus();
       });
+    },
+    checkIfTask(project) {
+      return project.permTask.includes(firebase.auth().currentUser.uid);
+    },
+    checkIfAdmin(project) {
+      return project.permAdmin.includes(firebase.auth().currentUser.uid);
+    },
+    checkIfBoard(project) {
+      return project.permBoard.includes(firebase.auth().currentUser.uid)
     },
     addProject: function() {
       if (
