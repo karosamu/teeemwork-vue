@@ -155,7 +155,7 @@ export default {
 
 .board-item:hover {
   .icon {
-    background-color: var(--accent-1);
+    background-color: var(--accent-hover);
   }
 }
 

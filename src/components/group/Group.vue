@@ -374,7 +374,6 @@ export default {
 .new-task-container {
   transition: var(--animation-duration);
   background-color: var(--task-new-background);
-  border-radius: 5px;
   display: flex;
   height: 50px;
 }
@@ -397,7 +396,6 @@ export default {
   top: 0;
   position: sticky;
   z-index: 10;
-  border-radius: 5px;
 }
 
 .scrollbar-active {

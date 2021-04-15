@@ -165,7 +165,7 @@ export default {
 
 .custom-select .items {
   width: 300px;
-  border-radius: 5px 5px 5px 5px;
+  border-radius: var(--corner-radius);
   position: absolute;
   background-color: var(--background);
 }
@@ -179,7 +179,7 @@ export default {
 .custom-select .items div:hover {
   transition: var(--animation-duration);
   background-color: var(--label-hover);
-  border-radius: 5px 5px 5px 5px;
+  border-radius: var(--corner-radius);
 }
 
 .selectHide {

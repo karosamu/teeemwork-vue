@@ -3,7 +3,7 @@
     <div class="checkbox-container">
       <input
         :disabled="!(checkIfOwner || checkIfTask || checkIfAdmin)"
-        :id="data.id"
+        :id="checkbox.id"
         v-model="checked"
         type="checkbox"
         class="modal-checkbox"
@@ -15,7 +15,7 @@
         :class="checked ? 'checked' : 'normal'"
         @click="editCheckbox"
       >
-        {{ data.name }}
+        {{ checkbox.name }}
       </p>
       <form
         class="edit-form checkbox-modal-edit-form"
@@ -28,15 +28,34 @@
           class="edit-input"
           minlength="1"
           maxlength="100"
-          v-on="listenersName"
+          @blur="submitEdit"
         />
       </form>
+      <div>
+        <div v-if="!editingAsignee && checkbox.asignee" @click="editAsigneeClick" class="checkbox-asignee">- {{asigneeInfo.name}} {{asigneeInfo.surname}}</div>
+        <form
+              class="edit-form nondrag asignee-edit-form"
+              @submit.prevent="submitAsignee"
+            >
+              <input
+                v-if="editingAsignee"
+                ref="editAsignee"
+                v-model="editAsignee"
+                class="edit-input"
+                minlength="1"
+                v-on="listenersAsignee"
+              />
+            </form>
+      </div>
     </div>
     <div
       v-if="checkIfOwner || checkIfTask || checkIfAdmin"
       class="owner-controls"
       @click.stop
     >
+      <button class="action-button" @click="editAsigneeClick">
+        <div class="action-icon icon user animate"></div>
+      </button>
       <button class="action-button" @click="removeCheckBox">
         <div class="action-icon icon cross animate normal"></div>
       </button>
@@ -58,7 +77,7 @@ import { mapState } from "vuex";
 export default {
   name: "Checkbox",
   props: {
-    data: {
+    checkbox: {
       type: Object,
       default: () => {
         return {};
@@ -76,20 +95,31 @@ export default {
       checked: false,
       editing: false,
       editCheckboxName: "",
-      inputActive: false
+      inputActive: false,
+      editingAsignee: false,
+      editAsignee: ""
     };
   },
   mounted() {
-    this.checked = this.data.checked;
+    this.checked = this.checkbox.checked;
   },
   computed: {
-    ...mapState(["projects"]),
+    ...mapState(["projects", "users"]),
+    asigneeInfo() {
+      return this.users.find(x => x.id === this.checkbox.asignee);
+    },
     project() {
       return this.projects.find(x => x.id === this.$route.params.projectid);
     },
     listenersName() {
-      if (!this.inputActive) {
+      if (this.inputActive) {
         return { blur: this.submitEdit };
+      }
+      return null;
+    },
+    listenersAsignee() {
+      if (this.inputActive) {
+        return { blur: this.submitAsignee };
       }
       return null;
     },
@@ -110,18 +140,62 @@ export default {
   methods: {
     setCheckbox() {
       if (this.checkIfOwner || this.checkIfTask || this.checkIfAdmin)
-        checkboxRef.doc(this.data.id).update({
+        checkboxRef.doc(this.checkbox.id).update({
           checked: this.checked
         });
     },
     editCheckbox() {
       if (this.checkIfTask || this.checkIfOwner || this.checkIfAdmin) {
-        this.editCheckboxName = this.data.name;
+        this.editCheckboxName = this.checkbox.name;
         this.editing = !this.editing;
         if (this.editing) {
           this.$nextTick(() => {
             this.$refs.editModalCheckbox.focus();
           });
+        }
+      }
+    },
+    editAsigneeClick() {
+      this.inputActive = true;
+      if (this.checkIfTask || this.checkIfOwner || this.checkIfAdmin) {
+        if(this.checkbox.asignee) this.editAsignee = this.asigneeInfo.email;
+        this.editingAsignee = !this.editingAsignee;
+        if (this.editingAsignee) {
+          this.$nextTick(() => {
+            this.$refs.editAsignee.focus();
+          });
+        }
+      }
+    },
+    submitAsignee() {
+      this.editingAsignee = false;
+      let user = this.users.find(obj => {
+        return obj.email === this.editAsignee;
+      });
+      if(user) {
+        if (
+          this.editAsignee.length <= 300 &&
+          this.task.asignee !== user.id
+        ) {
+          checkboxRef
+            .doc(this.checkbox.id)
+            .update({
+              asignee: user.id
+            })
+            .then(() => {
+              log(
+                `Changed ${this.checkbox.name} asignee to ${user.email}`,
+                this.$route.params.projectid,
+                "checkbox"
+              );
+              this.editAsignee = "";
+              this.inputActive = false;
+            })
+            .catch(error => {
+              this.$toasted.global.error({
+                message: error
+              });
+            });
         }
       }
     },
@@ -131,16 +205,16 @@ export default {
       if (
         this.editCheckboxName.length >= 1 &&
         this.editCheckboxName.length <= 100 &&
-        this.data.name !== this.editCheckboxName
+        this.checkbox.name !== this.editCheckboxName
       ) {
         checkboxRef
-          .doc(this.data.id)
+          .doc(this.checkbox.id)
           .update({
             name: this.editCheckboxName
           })
           .then(() => {
             log(
-              `Edited checkbox title of ${this.data.name}`,
+              `Edited checkbox title of ${this.checkbox.name}`,
               this.$route.params.projectid,
               "checkbox"
             );
@@ -155,7 +229,7 @@ export default {
     },
     decrement(orderNo) {
       checkboxRef
-        .where("task", "==", this.data.task)
+        .where("task", "==", this.checkbox.task)
         .where("order", ">", orderNo)
         .get()
         .then(function(snapshot) {
@@ -167,13 +241,13 @@ export default {
         });
     },
     removeCheckBox() {
-      let odrerNo = this.data.order;
+      let odrerNo = this.checkbox.order;
       checkboxRef
-        .doc(this.data.id)
+        .doc(this.checkbox.id)
         .delete()
         .then(() => {
           log(
-            `Removed ${this.data.name} label from ${this.task.name}`,
+            `Removed ${this.checkbox.name} label from ${this.task.name}`,
             this.$route.params.projectid,
             "checkbox"
           );
@@ -195,7 +269,7 @@ export default {
   justify-content: space-between;
 
   .checkbox-container {
-    width: calc(100% - 30px);
+    width: calc(100% - 80px);
     line-height: 20px;
   }
 
@@ -204,10 +278,18 @@ export default {
     margin-right: 10px;
     height: 20px;
   }
+
+  .checkbox-modal-edit-form {
+    width: calc(100% - 50px);
+
+    input {
+      width: 100%;
+    }
+  }
 }
 
 .checkbox-text {
-  width: 100%;
+  width: calc(100% - 30px);
   word-wrap: break-word;
   line-height: 20px;
   padding-left: 10px;
@@ -223,5 +305,10 @@ export default {
   transition: var(--animation-duration);
   color: gray;
   text-decoration: line-through;
+}
+
+.checkbox-asignee {
+  color: var(--accent-1);
+  font-size: 14px;
 }
 </style>

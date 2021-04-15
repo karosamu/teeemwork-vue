@@ -2,12 +2,12 @@
   <div>
     <div class="checkbox-title">
       <div class="icon checkbox"></div>
-      Tasks:
+      Subtasks:
     </div>
     <Checkbox
       v-for="checkbox in checkboxes"
       :key="checkbox.id"
-      :data="checkbox"
+      :checkbox="checkbox"
     />
     <div
       v-if="checkIfOwner || checkIfTask || checkIfAdmin"
@@ -49,6 +49,12 @@ export default {
   name: "CheckboxList",
   components: { Checkbox },
   props: {
+    checkboxes: {
+      ype: Object,
+      default: () => {
+        return {};
+      }
+    },
     task: {
       type: Object,
       default: () => {
@@ -58,7 +64,6 @@ export default {
   },
   data() {
     return {
-      checkboxes: {},
       newOpen: false,
       checkboxInput: ""
     };
@@ -114,13 +119,6 @@ export default {
           });
       }
     }
-  },
-  firestore() {
-    return {
-      checkboxes: checkboxRef
-        .where("task", "==", this.task.id)
-        .orderBy("order", "asc")
-    };
   }
 };
 </script>
@@ -128,6 +126,14 @@ export default {
 <style lang="scss" scoped>
 .new-checkbox-container {
   height: 24px;
+}
+
+.new-checkbox-form {
+  width: 100%;
+
+  input {
+    width: calc(100% - 50px);
+  }
 }
 
 .checkbox-title {
@@ -140,5 +146,6 @@ export default {
     float: left;
     margin-right: 5px;
   }
+
 }
 </style>
