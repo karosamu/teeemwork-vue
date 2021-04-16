@@ -45,12 +45,7 @@ export default new Vuex.Store({
       );
     }),
     bindProject: firestoreAction(({ bindFirestoreRef }, id) => {
-      return bindFirestoreRef(
-        "project",
-        db
-          .collection("projects")
-          .doc(id)
-      );
+      return bindFirestoreRef("project", db.collection("projects").doc(id));
     }),
     bindUsers: firestoreAction(({ bindFirestoreRef }) => {
       return bindFirestoreRef("users", db.collection("users"));

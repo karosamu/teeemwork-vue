@@ -1,5 +1,5 @@
 <template>
-  <div class="checkbox">
+  <div class="checkbox-cont">
     <div class="checkbox-container">
       <input
         :disabled="!(checkIfOwner || checkIfTask || checkIfAdmin)"
@@ -270,7 +270,7 @@ export default {
 </script>
 
 <style lang="scss">
-.checkbox {
+.checkbox-cont {
   margin: 5px 10px;
   width: 100%;
   display: flex;

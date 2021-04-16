@@ -6,11 +6,11 @@ import SignUp from "../views/SignUp.vue";
 import Profile from "../views/Profile.vue";
 import MainContent from "../components/MainContent.vue";
 import Board from "../views/Board.vue";
-import Share from "../views/Share.vue"
+import Share from "../views/Share.vue";
 import Project from "../views/Project.vue";
 import Homepage from "../components/Homepage.vue";
 import firebase from "firebase/app";
-import { boardsRef, projectsRef } from "../main";
+import { projectsRef } from "../main";
 Vue.use(VueRouter);
 
 const routes = [
@@ -120,7 +120,7 @@ const routes = [
     },
     props: {
       mainRouter: true
-    },
+    }
   }
 ];
 
@@ -168,16 +168,15 @@ router.beforeEach((to, from, next) => {
           message: error
         });
       });
-  } else if(to.name === "public" && allowPublic) {
-    boardsRef
-      .doc(to.params.boardid)
+  } else if (to.name === "public" && allowPublic) {
+    projectsRef
+      .doc(to.params.projectid)
       .get()
       .then(doc => {
-        if(doc.data().allowPublic)
-          next()
-        else
-          next("/homepage")
-      })
+        console.log(doc.data().allowPublic);
+        if (doc.data().allowPublic) next();
+        else next("/homepage");
+      });
   } else {
     next();
   }

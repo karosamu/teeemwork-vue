@@ -2,9 +2,7 @@
   <div ref="groups" class="box-shadow scrollbar task-list-parent">
     <div class="static-top">
       <div class="group-title text left">
-        <div
-          class="title"
-        >
+        <div class="title">
           <div class="icon group"></div>
 
           <p class="group-name">
@@ -14,17 +12,20 @@
         </div>
       </div>
     </div>
-    <div
-      class="task-list animate"
-    >
-        <Task v-for="task in getTaskList" :key="task.id" :task="task" :groupid="group.id" />
+    <div class="task-list animate">
+      <Task
+        v-for="task in getTaskList"
+        :key="task.id"
+        :task="task"
+        :groupid="group.id"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import { tasksRef } from '../../main';
+import { tasksRef } from "../../main";
 import Task from "./Task.vue";
 export default {
   name: "Group",

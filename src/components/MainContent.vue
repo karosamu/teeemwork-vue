@@ -20,13 +20,24 @@
 
 <script>
 import Sidebar from "./sidebar/Sidebar.vue";
+import { mapState } from "vuex";
+import firebase from "firebase/app";
 export default {
   mounted() {
     this.$store.dispatch("bindProjects");
     this.$store.dispatch("bindUsers");
   },
   components: { Sidebar },
+  watch: {
+    users() {
+      console.log(this.users.includes(firebase.auth().currentUser.uid));
+      if (this.users.includes(firebase.auth().currentUser.uid)) {
+        this.$router.push({ name: "home" });
+      }
+    }
+  },
   computed: {
+    ...mapState(["users"]),
     toggledStatus() {
       return this.$store.getters.getToggled;
     }

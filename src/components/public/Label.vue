@@ -1,9 +1,7 @@
 <template>
   <div class="task-label">
     <div :style="{ backgroundColor: label.color }" class="label-color"></div>
-    <p
-      class="text label-text"
-    >
+    <p class="text label-text">
       {{ label.name }}
     </p>
   </div>
@@ -12,6 +10,6 @@
 <script>
 export default {
   name: "Label",
-  props: ["task", "label"],
+  props: ["task", "label"]
 };
 </script>

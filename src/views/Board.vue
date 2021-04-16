@@ -43,12 +43,13 @@
       :get-child-payload="getChildPayload"
       @drop="onDrop(board, $event)"
       orientation="horizontal"
-      class="group-grid board scrollbar"
+      class="group-grid board-padding scrollbar"
       non-drag-area-selector=".nondrag"
       :animation-duration="animationSpeed"
       v-if="project"
     >
       <Draggable
+        class="draggable-container"
         :class="checkIfGroup || checkIfOwner || checkIfAdmin ? '' : 'nondrag'"
         v-for="group in groups"
         :key="group.id"
@@ -169,11 +170,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.board-groups-container {
-  height: 100%;
-}
-
+<style lang="scss">
 .search-box {
   height: 70px;
   width: 100%;
@@ -196,12 +193,11 @@ export default {
     }
   }
 }
-.board {
+.board-padding {
   padding: 20px 40px 20px 20px;
 }
 
 .group-grid {
-  padding-right: 100px;
   height: calc(100% - 70px);
   display: grid !important;
   grid-auto-columns: 272px;

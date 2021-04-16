@@ -4,17 +4,12 @@
       <div class="task-modal-title-container">
         <div class="task-name-container">
           <div class="icon task"></div>
-          <p
-            class="text left task-modal-title"
-          >
+          <p class="text left task-modal-title">
             {{ task.name }}
           </p>
           <div class="asignee">
             <span v-if="task.asignee" class="text">Assigned user:</span>
-            <div
-              v-if="task.asignee"
-              class="text asignee-text"
-            >
+            <div v-if="task.asignee" class="text asignee-text">
               - {{ asigneeInfo.name }} {{ asigneeInfo.surname }}
             </div>
           </div>
@@ -36,7 +31,11 @@
         class="checkbox-list-component"
         :task="task"
       />
-      <TaskLabelList class="label-list-component" :task="task" :labels="task.labels" />
+      <TaskLabelList
+        class="label-list-component"
+        :task="task"
+        :labels="task.labels"
+      />
     </div>
   </div>
 </template>
@@ -79,7 +78,7 @@ export default {
       )
         return true;
       else return false;
-    },
+    }
   }
 };
 </script>

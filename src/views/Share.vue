@@ -11,8 +11,14 @@
         />
       </div>
     </div>
-    <div class="group-grid board scrollbar">
-        <Group v-for="group in groups" :key="group.id" :group="group" :projectid="projectid" :boardid="boardid" />
+    <div class="group-grid board-padding scrollbar">
+      <Group
+        v-for="group in groups"
+        :key="group.id"
+        :group="group"
+        :projectid="projectid"
+        :boardid="boardid"
+      />
     </div>
   </div>
 </template>
@@ -31,7 +37,15 @@ export default {
     },
     boardid: {
       type: String,
-      default: ""
+      default: "",
+      enabled: false
+    }
+  },
+  watch: {
+    project() {
+      if (!this.project.allowPublic) {
+        this.$router.push({ name: "homepage" });
+      }
     }
   },
   data() {
@@ -41,16 +55,17 @@ export default {
     };
   },
   computed: {
-    ...mapState(["project"]),
+    ...mapState(["project"])
   },
   methods: {
     globalSearch() {
       this.$store.commit("setSearch", this.search);
-    },
+    }
   },
   mounted() {
     this.$store.dispatch("bindProject", this.projectid);
     this.$store.dispatch("bindUsers");
+    this.mounted = this.project.allowPublic;
   },
   firestore() {
     return {
@@ -64,83 +79,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.board-groups-container {
-  height: 100%;
-}
-
-.search-box {
-  height: 70px;
-  width: 100%;
-  padding: 20px 20px 0 20px;
-  display: flex;
-
-  .search-form {
-    width: 100%;
-    height: 100%;
-
-    .search-input {
-      color: var(--group-foreground);
-      transition: var(--animation-duration);
-      background: var(--group-background);
-      width: 100%;
-      height: 100%;
-      border: none;
-      outline: none;
-      padding-left: 20px;
-    }
-  }
-}
-.board {
-  padding: 20px 40px 20px 20px;
-}
-
 .group-grid {
-  padding-right: 100px;
-  height: calc(100% - 70px);
-  display: grid !important;
-  grid-auto-columns: 272px;
-  grid-auto-flow: column;
-  grid-gap: 12px;
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-
-.new-group-container {
-  height: 100%;
-  position: relative;
-  z-index: 20;
-}
-
-.inner-new-group-container {
-  transition: var(--animation-duration);
-  background-color: var(--group-new-background);
-  height: 100%;
-  width: 272px;
-  margin-right: 12px;
-}
-.new-group-input {
-  height: 100%;
-  width: 100%;
-  background-color: #ffffff00;
-  border: none;
-  outline: none;
-  color: var(--foreground);
-  padding: 10px;
-}
-.new-group {
-  background-color: #00000000;
-  outline: none;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  height: 100%;
-  text-align: left;
-  padding-left: 10px;
-  color: var(--foreground);
-}
-
-.new-group-form {
-  width: 100%;
-  height: 100%;
+  padding: 20px 0 20px 20px;
 }
 </style>

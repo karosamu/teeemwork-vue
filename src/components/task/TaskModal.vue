@@ -118,7 +118,11 @@
         class="checkbox-list-component"
         :task="task"
       />
-      <TaskLabelList class="label-list-component" :task="task" :labels="task.labels" />
+      <TaskLabelList
+        class="label-list-component"
+        :task="task"
+        :labels="task.labels"
+      />
     </div>
   </div>
 </template>

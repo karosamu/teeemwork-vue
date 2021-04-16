@@ -25,7 +25,7 @@ export default {
   width: 50px;
   margin-bottom: 2px;
   margin-right: 10px;
-  border-radius: 10px;
+  border-radius: var(--corner-radius);
   transition: var(--animation-duration);
 }
 
