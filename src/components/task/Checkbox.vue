@@ -269,7 +269,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .checkbox {
   margin: 5px 10px;
   width: 100%;

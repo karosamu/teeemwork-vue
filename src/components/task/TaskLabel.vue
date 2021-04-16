@@ -61,7 +61,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .label-color {
   height: 17px;
   width: 50px;

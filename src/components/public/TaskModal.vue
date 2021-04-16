@@ -1,6 +1,6 @@
 <template>
   <div class="modal nondrag scrollbar flex vertical" @click="$emit('disable')">
-    <div class="modal-content scrollbar box-shadow">
+    <div class="modal-content scrollbar box-shadow" @click.stop>
       <div class="task-modal-title-container">
         <div class="task-name-container">
           <div class="icon task"></div>

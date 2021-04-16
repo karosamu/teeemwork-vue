@@ -6,7 +6,7 @@
           <div class="icon task"></div>
           <p
             v-if="!editing"
-            class="text left task-modal-title"
+            class="text left task-modal-title task-modal-cursor"
             @click="editTask"
           >
             {{ task.name }}
@@ -489,6 +489,9 @@ export default {
     .task-modal-title {
       width: calc(100% - 40px);
       word-wrap: break-word;
+    }
+
+    .task-modal-cursor {
       cursor: pointer;
     }
 
