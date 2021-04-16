@@ -7,12 +7,14 @@ import axios from "axios";
 import { firestorePlugin } from "vuefire";
 import store from "./store/index";
 import Toasted from "vue-toasted";
-import linkify from 'vue-linkify'
- 
-Vue.directive('linkified', linkify)
+import linkify from "vue-linkify";
+import VueClipboard from "vue-clipboard2";
+
+Vue.directive("linkified", linkify);
 Vue.prototype.$axios = axios;
 Vue.use(firestorePlugin);
 Vue.use(Toasted);
+Vue.use(VueClipboard);
 Vue.config.productionTip = false;
 
 Vue.toasted.register(

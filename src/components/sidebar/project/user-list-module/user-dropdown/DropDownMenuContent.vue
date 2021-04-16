@@ -1,10 +1,7 @@
 <template>
   <transition name="dropdown-content">
-    <div
-      v-if="active"
-      class="dropdown"
-    >
-      <slot/>
+    <div v-if="active" class="dropdown">
+      <slot />
     </div>
   </transition>
 </template>
@@ -23,14 +20,14 @@ export default {
 
 <style>
 .dropdown {
-    transform-origin: top right;
-    width: 12rem;
-    right: 0;
-    position: absolute;
-    padding-top: .5rem;
-    padding-bottom: .5rem;
-    margin-top: .5rem;
-    background-color: #000000;
+  transform-origin: top right;
+  width: 12rem;
+  right: 0;
+  position: absolute;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-top: 0.5rem;
+  background-color: #000000;
 }
 .dropdown-content-enter-active,
 .dropdown-content-leave-active {

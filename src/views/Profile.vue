@@ -31,6 +31,7 @@ export default {
 
   .profile-container {
     background-color: var(--background-2);
+    transition: var(--animation-duration);
     padding: 40px;
     width: 500px;
     display: flex;

@@ -6,7 +6,7 @@
           <div class="icon task"></div>
           <p
             v-if="!editing"
-            class="text left task-modal-title"
+            class="text left task-modal-title task-modal-cursor"
             @click="editTask"
           >
             {{ task.name }}
@@ -27,8 +27,21 @@
           </form>
           <div class="asignee">
             <span class="text">Assigned user:</span>
-            <div @click="editAsigneeClick" v-if="!task.asignee && !editingAsignee" class="text"><div class="icon plus"></div>User</div>
-            <div @click="editAsigneeClick" v-if="task.asignee && !editingAsignee" class="text asignee-text">- {{asigneeInfo.name}} {{asigneeInfo.surname}}</div>
+            <div
+              @click="editAsigneeClick"
+              v-if="!task.asignee && !editingAsignee"
+              class="text"
+            >
+              <div class="icon plus"></div>
+              User
+            </div>
+            <div
+              @click="editAsigneeClick"
+              v-if="task.asignee && !editingAsignee"
+              class="text asignee-text"
+            >
+              - {{ asigneeInfo.name }} {{ asigneeInfo.surname }}
+            </div>
             <form
               class="edit-form nondrag asignee-edit-form"
               @submit.prevent="submitAsignee"
@@ -42,9 +55,7 @@
               />
             </form>
           </div>
-          
         </div>
-        <div class="spacer"></div>
         <div class="description-container">
           <div class="icon description"></div>
           <span class="text">Description</span>
@@ -86,7 +97,6 @@
             />
           </form>
         </div>
-        <!--<div class="links">Links...</div>-->
         <div
           v-if="checkIfOwner || checkIfTask || checkIfAdmin"
           class="owner-controls"
@@ -103,8 +113,16 @@
           </button>
         </div>
       </div>
-      <CheckboxList :checkboxes="checkboxes" class="checkbox-list-component" :task="task" />
-      <TaskLabelList :task="task" :labels="task.labels" />
+      <CheckboxList
+        :checkboxes="checkboxes"
+        class="checkbox-list-component"
+        :task="task"
+      />
+      <TaskLabelList
+        class="label-list-component"
+        :task="task"
+        :labels="task.labels"
+      />
     </div>
   </div>
 </template>
@@ -125,7 +143,7 @@ export default {
   mixins: [mixinAutoResize],
   props: {
     checkboxes: {
-      ype: Object,
+      type: Array,
       default: () => {
         return {};
       }
@@ -214,7 +232,7 @@ export default {
     editAsigneeClick() {
       this.inputActive = true;
       if (this.checkIfTask || this.checkIfOwner || this.checkIfAdmin) {
-        if(this.task.asignee) this.editAsignee = this.asigneeInfo.email;
+        if (this.task.asignee) this.editAsignee = this.asigneeInfo.email;
         this.editingAsignee = !this.editingAsignee;
         if (this.editingAsignee) {
           this.$nextTick(() => {
@@ -228,10 +246,8 @@ export default {
       let user = this.users.find(obj => {
         return obj.email === this.editAsignee;
       });
-      if((user && this.task.asignee !== user.id) || this.editAsignee == "") {
-        if (
-          this.editAsignee.length <= 300
-        ) {
+      if ((user && this.task.asignee !== user.id) || this.editAsignee == "") {
+        if (this.editAsignee.length <= 300) {
           tasksRef
             .doc(this.task.id)
             .update({
@@ -239,7 +255,9 @@ export default {
             })
             .then(() => {
               log(
-                `Changed ${this.task.name} asignee to ${user ? user.email : "none"}`,
+                `Changed ${this.task.name} asignee to ${
+                  user ? user.email : "none"
+                }`,
                 this.$route.params.projectid,
                 "task"
               );
@@ -368,7 +386,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .modal {
   width: 100vw;
   height: 100vh;
@@ -394,9 +412,12 @@ export default {
     background-color: var(--background);
     padding: 30px;
 
+    .description-container {
+      margin-top: 30px;
+    }
+
     .asignee {
-      margin: 10px 10px 10px 0;
-      
+      margin: 10px 0 0 0;
     }
 
     .asignee-text {
@@ -435,12 +456,6 @@ export default {
       tab-size: 2;
     }
 
-    .spacer {
-      height: 1px;
-      width: 100%;
-      margin: 20px;
-    }
-
     .task-modal-edit-form {
       width: 100%;
 
@@ -457,7 +472,6 @@ export default {
       position: relative;
       width: calc(100%);
       line-height: 20px;
-      margin-bottom: 20px;
 
       .owner-controls {
         position: absolute;
@@ -472,14 +486,21 @@ export default {
       }
     }
 
+    .label-list-component {
+      margin-top: 30px;
+    }
+
     .task-modal-title {
       width: calc(100% - 40px);
       word-wrap: break-word;
+    }
+
+    .task-modal-cursor {
       cursor: pointer;
     }
 
     .checkbox-list-component {
-      margin-bottom: 20px;
+      margin-top: 30px;
     }
   }
 }

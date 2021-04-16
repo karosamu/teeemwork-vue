@@ -10,7 +10,8 @@ export default new Vuex.Store({
     toggled: true,
     search: "",
     projects: [],
-    users: []
+    users: [],
+    project: []
   },
   getters: {
     getLoaded: state => state.loaded,
@@ -42,6 +43,9 @@ export default new Vuex.Store({
           )
           .orderBy("createdAt", "desc")
       );
+    }),
+    bindProject: firestoreAction(({ bindFirestoreRef }, id) => {
+      return bindFirestoreRef("project", db.collection("projects").doc(id));
     }),
     bindUsers: firestoreAction(({ bindFirestoreRef }) => {
       return bindFirestoreRef("users", db.collection("users"));

@@ -131,7 +131,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .new-label-container {
   height: 24px;
 }
@@ -148,7 +148,6 @@ export default {
 }
 
 .custom-select {
-  margin-top: 20px;
   outline: none;
 }
 

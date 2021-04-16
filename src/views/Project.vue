@@ -11,6 +11,11 @@
       v-if="checkIfOwner || checkIfAdmin"
       :projectid="projectid"
     />
+    <SettingsPanel
+      :projectid="project.id"
+      v-if="checkIfOwner || checkIfAdmin"
+      v-show="checkIfShow('Public')"
+    />
     <LabelList v-show="checkIfShow('Labels')" :projectid="projectid" />
     <LogPanel
       v-show="checkIfShow('Logs')"
@@ -25,11 +30,12 @@ import SettingsToggle from "../components/sidebar/project/settings-module/Settin
 import UserList from "../components/sidebar/project/user-list-module/UserList";
 import LabelList from "../components/sidebar/project/label-module/LabelList";
 import LogPanel from "../components/sidebar/project/logs-module/LogPanel";
+import SettingsPanel from "../components/sidebar/project/settings-module/SettingsPublic";
 import firebase from "firebase/app";
 import { mapState } from "vuex";
 export default {
   name: "Project",
-  components: { UserList, LabelList, LogPanel, SettingsToggle },
+  components: { UserList, LabelList, LogPanel, SettingsToggle, SettingsPanel },
   props: {
     projectid: {
       type: String,
@@ -40,7 +46,7 @@ export default {
     return {
       settingsList: ["Labels"],
       disabledSettings: [],
-      ownerSettings: ["Users", "Labels", "Logs"]
+      ownerSettings: ["Users", "Public", "Labels", "Logs"]
     };
   },
   computed: {

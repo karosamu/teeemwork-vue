@@ -45,7 +45,6 @@
           @blur="newOpen = false"
         />
       </form>
-      
     </div>
   </div>
 </template>

@@ -50,6 +50,17 @@
           minlength="5"
         />
       </div>
+      <div class="input-field">
+        <label class="text left" for="password-confirm">Confirm password</label>
+        <input
+          required
+          v-model="passwordConfirm"
+          type="password"
+          autocomplete="current-password"
+          name="password-confirm"
+          minlength="5"
+        />
+      </div>
       <div class="button-container flex center box-shadow">
         <input class="submit-button" type="submit" value="Submit" />
       </div>
@@ -69,30 +80,35 @@ export default {
   data() {
     return {
       password: "",
+      passwordConfirm: "",
       email: "",
       name: "",
       surname: ""
     };
   },
   methods: {
-    signUp: async function() {
-      try {
-        await firebase
-          .auth()
-          .createUserWithEmailAndPassword(this.email, this.password)
-          .then(() => {
-            usersRef.doc(firebase.auth().currentUser.uid).set({
-              name: this.name,
-              surname: this.surname,
-              email: this.email
+    async signUp() {
+      if(this.password === this.passwordConfirm) {
+        try {
+          await firebase
+            .auth()
+            .createUserWithEmailAndPassword(this.email, this.password)
+            .then(() => {
+              usersRef.doc(firebase.auth().currentUser.uid).set({
+                name: this.name,
+                surname: this.surname,
+                email: this.email
+              });
+              firebase.auth().currentUser.updateProfile({
+                displayName: `${this.name} ${this.surname}`
+              });
+              this.$router.replace({ name: "homepage" });
             });
-            firebase.auth().currentUser.updateProfile({
-              displayName: `${this.name} ${this.surname}`
-            });
-            this.$router.replace({ name: "homepage" });
-          });
-      } catch (error) {
-        this.$toasted.global.error({ message: error });
+        } catch (error) {
+          this.$toasted.global.error({ message: error });
+        }
+      } else {
+        this.$toasted.global.error({ message: "Passwords do not match!" });
       }
     }
   }

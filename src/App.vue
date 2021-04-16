@@ -49,9 +49,10 @@ export default {
   --background: #ffffff;
   --background-2: #ffffff;
   --foreground: #1b1b1b;
+  --foreground-light: #424242;
   --accent-1: #7c9473;
   --accent-2: #646e64;
-  --accent-hover: #afd1a2;
+  --accent-hover: #5d665a;
 
   /* other variables */
   --animation-duration: 0.1s;
@@ -102,6 +103,8 @@ export default {
   --background: #313131;
   --background-2: #414141;
   --foreground: #fefefe;
+  --foreground-light: #d1d1d1;
+  --accent-hover: #9cbd8f;
 
   /* task */
   --task-background: var(--background);
@@ -413,6 +416,15 @@ body {
     -webkit-mask: url(./assets/add_task_black_18dp.svg) no-repeat center /
       contain;
   }
+  &.public {
+    mask: url(./assets/public_black_18dp.svg) no-repeat center / contain;
+    -webkit-mask: url(./assets/public_black_18dp.svg) no-repeat center / contain;
+  }
+  &.clipboard {
+    mask: url(./assets/content_paste_black_18dp.svg) no-repeat center / contain;
+    -webkit-mask: url(./assets/content_paste_black_18dp.svg) no-repeat center /
+      contain;
+  }
 }
 
 .action-button {
@@ -535,5 +547,18 @@ body {
   text-decoration: none;
   font-weight: bold;
   font-family: monospace;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--foreground);
+  transition: background-color 5000s ease-in-out 0s;
 }
 </style>

@@ -123,7 +123,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .new-checkbox-container {
   height: 24px;
 }
@@ -146,6 +146,5 @@ export default {
     float: left;
     margin-right: 5px;
   }
-
 }
 </style>
