@@ -10,7 +10,7 @@
 
           <p @click.stop="editGroup" v-if="!editing" class="group-name">
             {{ group.name }}
-            <span class="task-length">({{ tasks.length }})</span>
+            <span class="task-length">({{ getTaskList.length }})</span>
           </p>
           <form
             @click.stop

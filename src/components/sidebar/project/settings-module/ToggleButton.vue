@@ -37,8 +37,10 @@ export default {
 }
 .enabled {
   background-color: var(--background);
+  transition: var(--animation-duration);
 }
 .disabled {
   background-color: var(--background-2);
+  transition: var(--animation-duration);
 }
 </style>

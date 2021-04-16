@@ -416,6 +416,15 @@ body {
     -webkit-mask: url(./assets/add_task_black_18dp.svg) no-repeat center /
       contain;
   }
+  &.public {
+    mask: url(./assets/public_black_18dp.svg) no-repeat center / contain;
+    -webkit-mask: url(./assets/public_black_18dp.svg) no-repeat center / contain;
+  }
+  &.clipboard {
+    mask: url(./assets/content_paste_black_18dp.svg) no-repeat center / contain;
+    -webkit-mask: url(./assets/content_paste_black_18dp.svg) no-repeat center /
+      contain;
+  }
 }
 
 .action-button {

@@ -10,7 +10,7 @@ import Share from "../views/Share.vue";
 import Project from "../views/Project.vue";
 import Homepage from "../components/Homepage.vue";
 import firebase from "firebase/app";
-import { projectsRef } from "../main";
+import { boardsRef, projectsRef } from "../main";
 Vue.use(VueRouter);
 
 const routes = [
@@ -169,8 +169,8 @@ router.beforeEach((to, from, next) => {
         });
       });
   } else if (to.name === "public" && allowPublic) {
-    projectsRef
-      .doc(to.params.projectid)
+    boardsRef
+      .doc(to.params.boardid)
       .get()
       .then(doc => {
         console.log(doc.data().allowPublic);

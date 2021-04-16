@@ -26,7 +26,6 @@
 <script>
 import { boardsRef, groupsRef } from "../main";
 import Group from "../components/public/Group.vue";
-import { mapState } from "vuex";
 export default {
   name: "Share",
   components: { Group },
@@ -42,20 +41,19 @@ export default {
     }
   },
   watch: {
-    project() {
-      if (!this.project.allowPublic) {
+    board() {
+      console.log(this.board);
+      if (!this.board.allowPublic) {
         this.$router.push({ name: "homepage" });
       }
     }
   },
   data() {
     return {
+      board: [],
       groups: [],
       search: ""
     };
-  },
-  computed: {
-    ...mapState(["project"])
   },
   methods: {
     globalSearch() {
@@ -65,7 +63,6 @@ export default {
   mounted() {
     this.$store.dispatch("bindProject", this.projectid);
     this.$store.dispatch("bindUsers");
-    this.mounted = this.project.allowPublic;
   },
   firestore() {
     return {
