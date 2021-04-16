@@ -49,6 +49,7 @@ export default {
   --background: #ffffff;
   --background-2: #ffffff;
   --foreground: #1b1b1b;
+  --foreground-light: #424242;
   --accent-1: #7c9473;
   --accent-2: #646e64;
   --accent-hover: #afd1a2;
@@ -102,6 +103,7 @@ export default {
   --background: #313131;
   --background-2: #414141;
   --foreground: #fefefe;
+  --foreground-light: #d1d1d1;
 
   /* task */
   --task-background: var(--background);
