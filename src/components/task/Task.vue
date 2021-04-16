@@ -18,14 +18,31 @@
         ><div class="icon task"></div>
         <p class="task-name">{{ task.name }}</p>
       </span>
-      <span class="asignee" v-if="task.asignee">- {{asigneeInfo.name}} {{asigneeInfo.surname}}</span>
-      <p v-if="task.description" class="task-container-description">{{task.description}}</p>
+      <span class="asignee" v-if="task.asignee"
+        >- {{ asigneeInfo.name }} {{ asigneeInfo.surname }}</span
+      >
+      <p v-if="task.description" class="task-container-description">
+        {{ task.description }}
+      </p>
       <div class="subtask-container" v-if="checkboxes.length > 0">
-        <p>Subtasks <span class="subtask-counter">({{completed.length}}/{{checkboxes.length}})</span></p>
-        <div :class="checkbox.checked ? 'completed' : 'incomplete'" class="subtask" v-for="checkbox in checkboxes" :key="checkbox.id">
-          <div>{{checkbox.name}}</div>
-          <div class="checkbox-asignee" v-if="checkbox.asignee">- {{checkboxeAsigneeInfo(checkbox.asignee).name}} {{checkboxeAsigneeInfo(checkbox.asignee).surname}}</div>
+        <p>
+          Subtasks
+          <span class="subtask-counter"
+            >({{ completed.length }}/{{ checkboxes.length }})</span
+          >
+        </p>
+        <div
+          :class="checkbox.checked ? 'completed' : 'incomplete'"
+          class="subtask"
+          v-for="checkbox in checkboxes"
+          :key="checkbox.id"
+        >
+          <div>{{ checkbox.name }}</div>
+          <div class="checkbox-asignee" v-if="checkbox.asignee">
+            - {{ checkboxeAsigneeInfo(checkbox.asignee).name }}
+            {{ checkboxeAsigneeInfo(checkbox.asignee).surname }}
           </div>
+        </div>
       </div>
     </div>
     <TaskModal
@@ -78,9 +95,7 @@ export default {
       );
     },
     completed() {
-      return this.checkboxes.filter(e => 
-        e.checked == true
-      )
+      return this.checkboxes.filter(e => e.checked == true);
     }
   },
   methods: {
@@ -112,15 +127,15 @@ export default {
   .task-container-description {
     margin: 0 10px 10px 10px;
     color: var(--foreground);
-    transition: var(--animation-duration);
     opacity: 70%;
+    transition: var(--animation-duration);
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3; /* number of lines to show */
-    line-height: 1em;        /* fallback */
-    max-height: 1em*3;       /* fallback */
+    line-height: 1em; /* fallback */
+    max-height: 1em * 3; /* fallback */
   }
 
   .subtask-counter {
@@ -190,7 +205,6 @@ export default {
   pointer-events: none;
 }
 
-
 .subtask-container {
   margin: 0px 10px 10px 10px;
 
@@ -201,7 +215,6 @@ export default {
 
     &.completed {
       border-left: 3px solid var(--accent-1);
-
     }
 
     &.incomplete {

@@ -27,8 +27,21 @@
           </form>
           <div class="asignee">
             <span class="text">Assigned user:</span>
-            <div @click="editAsigneeClick" v-if="!task.asignee && !editingAsignee" class="text"><div class="icon plus"></div>User</div>
-            <div @click="editAsigneeClick" v-if="task.asignee && !editingAsignee" class="text asignee-text">- {{asigneeInfo.name}} {{asigneeInfo.surname}}</div>
+            <div
+              @click="editAsigneeClick"
+              v-if="!task.asignee && !editingAsignee"
+              class="text"
+            >
+              <div class="icon plus"></div>
+              User
+            </div>
+            <div
+              @click="editAsigneeClick"
+              v-if="task.asignee && !editingAsignee"
+              class="text asignee-text"
+            >
+              - {{ asigneeInfo.name }} {{ asigneeInfo.surname }}
+            </div>
             <form
               class="edit-form nondrag asignee-edit-form"
               @submit.prevent="submitAsignee"
@@ -42,7 +55,6 @@
               />
             </form>
           </div>
-          
         </div>
         <div class="spacer"></div>
         <div class="description-container">
@@ -103,7 +115,11 @@
           </button>
         </div>
       </div>
-      <CheckboxList :checkboxes="checkboxes" class="checkbox-list-component" :task="task" />
+      <CheckboxList
+        :checkboxes="checkboxes"
+        class="checkbox-list-component"
+        :task="task"
+      />
       <TaskLabelList :task="task" :labels="task.labels" />
     </div>
   </div>
@@ -214,7 +230,7 @@ export default {
     editAsigneeClick() {
       this.inputActive = true;
       if (this.checkIfTask || this.checkIfOwner || this.checkIfAdmin) {
-        if(this.task.asignee) this.editAsignee = this.asigneeInfo.email;
+        if (this.task.asignee) this.editAsignee = this.asigneeInfo.email;
         this.editingAsignee = !this.editingAsignee;
         if (this.editingAsignee) {
           this.$nextTick(() => {
@@ -228,10 +244,8 @@ export default {
       let user = this.users.find(obj => {
         return obj.email === this.editAsignee;
       });
-      if((user && this.task.asignee !== user.id) || this.editAsignee == "") {
-        if (
-          this.editAsignee.length <= 300
-        ) {
+      if ((user && this.task.asignee !== user.id) || this.editAsignee == "") {
+        if (this.editAsignee.length <= 300) {
           tasksRef
             .doc(this.task.id)
             .update({
@@ -239,7 +253,9 @@ export default {
             })
             .then(() => {
               log(
-                `Changed ${this.task.name} asignee to ${user ? user.email : "none"}`,
+                `Changed ${this.task.name} asignee to ${
+                  user ? user.email : "none"
+                }`,
                 this.$route.params.projectid,
                 "task"
               );
@@ -396,7 +412,6 @@ export default {
 
     .asignee {
       margin: 10px 10px 10px 0;
-      
     }
 
     .asignee-text {

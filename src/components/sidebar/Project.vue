@@ -50,7 +50,7 @@
         <BoardTitleBar :board="board" :project="project" />
       </div>
     </div>
-    <div v-if="checkIfAllowedAdd" class="new-board-container">
+    <div v-if="checkIfBoard" class="new-board-container">
       <button v-if="!newOpen" class="new-board" @click="openBoardEntry">
         <div class="flex horizontal text">
           <div class="icon plus"></div>
@@ -110,16 +110,14 @@ export default {
     checkIfOwner() {
       return this.project.owner === firebase.auth().currentUser.uid;
     },
-    checkIfAllowedAdd() {
+    checkIfBoard() {
       return (
         this.checkIfOwner ||
         this.project.permBoard.includes(firebase.auth().currentUser.uid)
       );
     },
     checkIfShowList() {
-      return (
-        this.checkIfOwner || this.boards.length !== 0 || this.checkIfAllowedAdd
-      );
+      return this.checkIfOwner || this.boards.length !== 0 || this.checkIfBoard;
     }
   },
   methods: {

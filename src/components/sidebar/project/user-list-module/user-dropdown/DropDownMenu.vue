@@ -1,7 +1,7 @@
 <template>
   <div @click="toggle" class="user-dropdown">
     Open
-    <slot/>
+    <slot />
   </div>
 </template>
 

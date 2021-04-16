@@ -32,20 +32,26 @@
         />
       </form>
       <div>
-        <div v-if="!editingAsignee && checkbox.asignee" @click="editAsigneeClick" class="checkbox-asignee">- {{asigneeInfo.name}} {{asigneeInfo.surname}}</div>
+        <div
+          v-if="!editingAsignee && checkbox.asignee"
+          @click="editAsigneeClick"
+          class="checkbox-asignee"
+        >
+          - {{ asigneeInfo.name }} {{ asigneeInfo.surname }}
+        </div>
         <form
-              class="edit-form nondrag asignee-edit-form"
-              @submit.prevent="submitAsignee"
-            >
-              <input
-                v-if="editingAsignee"
-                ref="editAsignee"
-                v-model="editAsignee"
-                class="edit-input"
-                minlength="1"
-                v-on="listenersAsignee"
-              />
-            </form>
+          class="edit-form nondrag asignee-edit-form"
+          @submit.prevent="submitAsignee"
+        >
+          <input
+            v-if="editingAsignee"
+            ref="editAsignee"
+            v-model="editAsignee"
+            class="edit-input"
+            minlength="1"
+            v-on="listenersAsignee"
+          />
+        </form>
       </div>
     </div>
     <div
@@ -158,7 +164,7 @@ export default {
     editAsigneeClick() {
       this.inputActive = true;
       if (this.checkIfTask || this.checkIfOwner || this.checkIfAdmin) {
-        if(this.checkbox.asignee) this.editAsignee = this.asigneeInfo.email;
+        if (this.checkbox.asignee) this.editAsignee = this.asigneeInfo.email;
         this.editingAsignee = !this.editingAsignee;
         if (this.editingAsignee) {
           this.$nextTick(() => {
@@ -172,10 +178,11 @@ export default {
       let user = this.users.find(obj => {
         return obj.email === this.editAsignee;
       });
-      if((user && this.checkbox.asignee !== user.id) || this.editAsignee == "") {
-        if (
-          this.editAsignee.length <= 300
-        ) {
+      if (
+        (user && this.checkbox.asignee !== user.id) ||
+        this.editAsignee == ""
+      ) {
+        if (this.editAsignee.length <= 300) {
           checkboxRef
             .doc(this.checkbox.id)
             .update({
@@ -183,7 +190,9 @@ export default {
             })
             .then(() => {
               log(
-                `Changed ${this.checkbox.name} asignee to ${user ? user.email : "none"}`,
+                `Changed ${this.checkbox.name} asignee to ${
+                  user ? user.email : "none"
+                }`,
                 this.$route.params.projectid,
                 "checkbox"
               );
