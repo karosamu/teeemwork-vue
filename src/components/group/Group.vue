@@ -311,7 +311,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .owned {
   cursor: pointer;
 }
@@ -408,7 +408,7 @@ export default {
 }
 
 .task-length {
-  opacity: 70%;
+  color: var(--foreground-light);
   font-size: 13px;
 }
 </style>

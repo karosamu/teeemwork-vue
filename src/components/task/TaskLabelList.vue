@@ -148,7 +148,6 @@ export default {
 }
 
 .custom-select {
-  margin-top: 20px;
   outline: none;
 }
 

@@ -6,15 +6,12 @@ import SignUp from "../views/SignUp.vue";
 import Profile from "../views/Profile.vue";
 import MainContent from "../components/MainContent.vue";
 import Board from "../views/Board.vue";
+import Share from "../views/Share.vue"
 import Project from "../views/Project.vue";
 import Homepage from "../components/Homepage.vue";
 import firebase from "firebase/app";
-import { projectsRef } from "../main";
-// import store from "../store/index";
-import Vuex from "vuex";
-
+import { boardsRef, projectsRef } from "../main";
 Vue.use(VueRouter);
-Vue.use(Vuex);
 
 const routes = [
   {
@@ -111,6 +108,19 @@ const routes = [
       alreadyAuthed: true,
       allowSidebar: false
     }
+  },
+  {
+    path: "/public/:projectid/board/:boardid",
+    name: "public",
+    components: {
+      mainRouter: Share
+    },
+    meta: {
+      allowPublic: true
+    },
+    props: {
+      mainRouter: true
+    },
   }
 ];
 
@@ -121,8 +131,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  /* if (to.name === "board" || to.name === "project" || to.name === "homepage")
-    store.dispatch("enableLoading"); */
+  const allowPublic = to.matched.some(record => record.meta.allowPublic);
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
   const alreadyAuthed = to.matched.some(record => record.meta.alreadyAuthed);
   const isAuthenticated = firebase.auth().currentUser;
@@ -159,6 +168,16 @@ router.beforeEach((to, from, next) => {
           message: error
         });
       });
+  } else if(to.name === "public" && allowPublic) {
+    boardsRef
+      .doc(to.params.boardid)
+      .get()
+      .then(doc => {
+        if(doc.data().allowPublic)
+          next()
+        else
+          next("/homepage")
+      })
   } else {
     next();
   }

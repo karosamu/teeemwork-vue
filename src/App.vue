@@ -52,7 +52,7 @@ export default {
   --foreground-light: #424242;
   --accent-1: #7c9473;
   --accent-2: #646e64;
-  --accent-hover: #afd1a2;
+  --accent-hover: #5d665a;
 
   /* other variables */
   --animation-duration: 0.1s;
@@ -104,6 +104,7 @@ export default {
   --background-2: #414141;
   --foreground: #fefefe;
   --foreground-light: #d1d1d1;
+  --accent-hover: #9cbd8f;
 
   /* task */
   --task-background: var(--background);

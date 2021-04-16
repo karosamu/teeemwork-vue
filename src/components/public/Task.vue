@@ -1,7 +1,6 @@
 <template>
   <div>
     <div
-      :class="taskModal ? 'disable-drag' : 'enable-drag'"
       id="task"
       class="task-cursor box-shadow animate text left"
       @click="taskModal = true"
@@ -14,7 +13,7 @@
           class="label"
         ></div>
       </div>
-      <span v-if="!editing" class="task-title"
+      <span class="task-title"
         ><div class="icon task"></div>
         <p class="task-name">{{ task.name }}</p>
       </span>
@@ -77,10 +76,7 @@ export default {
   },
   data() {
     return {
-      newTaskName: "",
       taskModal: false,
-      editing: false,
-      editTaskName: "",
       checkboxes: {}
     };
   },
@@ -112,118 +108,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss">
-#task {
-  margin: 10px 10px 20px 10px;
-  color: var(--task-foreground);
-  background-color: var(--task-background);
-  min-height: 50px;
-  width: 230px;
-  display: flex;
-  justify-content: space-between;
-  position: relative;
-
-  .task-container-description {
-    margin: 0 10px 10px 10px;
-    color: var(--foreground-light);
-    transition: var(--animation-duration);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    line-height: 1em;
-    max-height: 1em * 3;
-  }
-
-  .subtask-counter {
-    color: var(--foreground-light);
-    font-size: 13px;
-  }
-
-  .owner-controls {
-    position: absolute;
-    right: 8px;
-    top: 15px;
-    z-index: 1;
-  }
-
-  .asignee {
-    margin: 0 10px 10px 10px;
-    color: var(--accent-1);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 14px;
-  }
-}
-
-.task-title {
-  width: calc(100% - 20px);
-  margin: 16px 10px 10px 10px;
-  line-height: 20px;
-
-  .icon {
-    float: left;
-    margin-right: 3px;
-  }
-}
-
-.label {
-  height: 10px;
-}
-
-.label-container {
-  width: 100%;
-  position: absolute;
-  display: grid;
-  grid-column-gap: 5px;
-  grid-template-columns: repeat(3, 1fr);
-
-  .label:first-child {
-    border-top-left-radius: var(--corner-radius);
-  }
-
-  .label:last-child {
-    border-top-right-radius: var(--corner-radius);
-  }
-}
-
-.task-edit-form {
-  margin: 16px 10px;
-}
-
-.task-cursor {
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-}
-
-.disable-drag {
-  pointer-events: none;
-}
-
-.subtask-container {
-  margin: 0px 10px 10px 10px;
-
-  .subtask {
-    padding: 0 5px 0 10px;
-    margin: 10px 0;
-    transition: var(--animation-duration);
-
-    &.completed {
-      border-left: 3px solid var(--accent-1);
-    }
-
-    &.incomplete {
-      border-left: 3px solid var(--task-foreground);
-    }
-  }
-
-  .checkbox-asignee {
-    color: var(--accent-1);
-    font-size: 14px;
-  }
-}
-</style>

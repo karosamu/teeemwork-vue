@@ -56,7 +56,6 @@
             </form>
           </div>
         </div>
-        <div class="spacer"></div>
         <div class="description-container">
           <div class="icon description"></div>
           <span class="text">Description</span>
@@ -98,7 +97,6 @@
             />
           </form>
         </div>
-        <!--<div class="links">Links...</div>-->
         <div
           v-if="checkIfOwner || checkIfTask || checkIfAdmin"
           class="owner-controls"
@@ -120,7 +118,7 @@
         class="checkbox-list-component"
         :task="task"
       />
-      <TaskLabelList :task="task" :labels="task.labels" />
+      <TaskLabelList class="label-list-component" :task="task" :labels="task.labels" />
     </div>
   </div>
 </template>
@@ -141,7 +139,7 @@ export default {
   mixins: [mixinAutoResize],
   props: {
     checkboxes: {
-      ype: Object,
+      type: Array,
       default: () => {
         return {};
       }
@@ -384,7 +382,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .modal {
   width: 100vw;
   height: 100vh;
@@ -410,8 +408,12 @@ export default {
     background-color: var(--background);
     padding: 30px;
 
+    .description-container {
+      margin-top: 30px;
+    }
+
     .asignee {
-      margin: 10px 10px 10px 0;
+      margin: 10px 0 0 0;
     }
 
     .asignee-text {
@@ -450,12 +452,6 @@ export default {
       tab-size: 2;
     }
 
-    .spacer {
-      height: 1px;
-      width: 100%;
-      margin: 20px;
-    }
-
     .task-modal-edit-form {
       width: 100%;
 
@@ -472,7 +468,6 @@ export default {
       position: relative;
       width: calc(100%);
       line-height: 20px;
-      margin-bottom: 20px;
 
       .owner-controls {
         position: absolute;
@@ -487,6 +482,10 @@ export default {
       }
     }
 
+    .label-list-component {
+      margin-top: 30px;
+    }
+
     .task-modal-title {
       width: calc(100% - 40px);
       word-wrap: break-word;
@@ -494,7 +493,7 @@ export default {
     }
 
     .checkbox-list-component {
-      margin-bottom: 20px;
+      margin-top: 30px;
     }
   }
 }
