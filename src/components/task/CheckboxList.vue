@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="checkboxes.length > 0 || (checkIfOwner || checkIfTask || checkIfAdmin)">
     <div class="checkbox-title">
       <div class="icon checkbox"></div>
       Subtasks:
@@ -132,7 +132,7 @@ export default {
   width: 100%;
 
   input {
-    width: calc(100% - 50px);
+    width: calc(100%);
   }
 }
 

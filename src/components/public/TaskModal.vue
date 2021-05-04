@@ -7,7 +7,7 @@
           <p class="text left task-modal-title">
             {{ task.name }}
           </p>
-          <div class="asignee">
+          <div v-if="task.asignee" class="asignee">
             <span v-if="task.asignee" class="text">Assigned user:</span>
             <div v-if="task.asignee" class="text asignee-text">
               - {{ asigneeInfo.name }} {{ asigneeInfo.surname }}

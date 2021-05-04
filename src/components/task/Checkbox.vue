@@ -288,10 +288,10 @@ export default {
   }
 
   .checkbox-modal-edit-form {
-    width: calc(100% - 50px);
+    width: calc(100%);
 
     input {
-      width: 100%;
+      width: 95%;
     }
   }
 }

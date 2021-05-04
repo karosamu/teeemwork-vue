@@ -1,5 +1,5 @@
 <template>
-  <div class="project-label-list animate box-shadow scrollbar">
+  <div v-if="(checkIfAdmin || checkIfOwner) || labels.length > 0" class="project-label-list animate box-shadow scrollbar">
     <div class="text left">
       <div class="module-title">
         <div class="icon label"></div>
@@ -7,6 +7,7 @@
       </div>
       <div v-if="labels.length > 0">
         <Label
+          :project="project"
           v-for="label in labels"
           :key="label.id"
           class="label-item"
@@ -14,7 +15,7 @@
         />
       </div>
     </div>
-    <div class="add-label-container">
+    <div v-if="checkIfAdmin || checkIfOwner" class="add-label-container">
       <button
         v-if="!newOpen"
         class="new-label action-button"
@@ -47,6 +48,7 @@
 
 <script>
 import { labelsRef } from "../../../../main";
+import { mapState } from "vuex";
 import Label from "./Label";
 import firebase from "firebase/app";
 import { log } from "../../../../utils/log";
@@ -66,6 +68,20 @@ export default {
       labels: [],
       color: "#7c9473"
     };
+  },
+  computed: {
+    ...mapState(["projects"]),
+    project() {
+      return this.projects.find(x => x.id === this.projectid);
+    },
+    checkIfOwner() {
+      return this.project
+        ? this.project.owner === firebase.auth().currentUser.uid
+        : false;
+    },
+    checkIfAdmin() {
+      return this.project.permAdmin.includes(firebase.auth().currentUser.uid);
+    }
   },
   methods: {
     loseFocus() {
@@ -142,6 +158,7 @@ export default {
 
     .new-label-input {
       padding-left: 10px;
+      width: 100%;
     }
   }
 }

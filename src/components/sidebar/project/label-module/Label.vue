@@ -25,7 +25,7 @@
             @blur="editing = false"
           />
         </form>
-        <div class="owner-controls">
+        <div  v-if="checkIfAdmin || checkIfOwner" class="owner-controls">
           <button class="action-button" @click="deleteLabel">
             <div class="action-icon icon cross animate normal"></div>
           </button>
@@ -53,6 +53,12 @@ export default {
       default: () => {
         return {};
       }
+    },
+    project: {
+      type: Object,
+      default: () => {
+        return {};
+      }
     }
   },
   data() {
@@ -66,6 +72,16 @@ export default {
   },
   mounted() {
     this.color = this.label.color;
+  },
+  computed: {
+    checkIfOwner() {
+      return this.project
+        ? this.project.owner === firebase.auth().currentUser.uid
+        : false;
+    },
+    checkIfAdmin() {
+      return this.project.permAdmin.includes(firebase.auth().currentUser.uid);
+    }
   },
   methods: {
     decrement(orderNo) {

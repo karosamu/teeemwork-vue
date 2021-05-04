@@ -25,7 +25,7 @@
               v-on="listenersName"
             />
           </form>
-          <div class="asignee">
+          <div v-if="(checkIfOwner || checkIfTask || checkIfAdmin) || task.asignee" class="asignee">
             <span class="text">Assigned user:</span>
             <div
               @click="editAsigneeClick"
@@ -56,7 +56,7 @@
             </form>
           </div>
         </div>
-        <div class="description-container">
+        <div v-if="(checkIfOwner || checkIfTask || checkIfAdmin) || checkIfDescriptionExists" class="description-container">
           <div class="icon description"></div>
           <span class="text">Description</span>
           <div @click="editDescription" class="description-box">
@@ -67,7 +67,7 @@
               >{{ task.description }}
             </code>
             <p
-              v-if="!editingDescription && !checkIfDescriptionExists"
+              v-if="!editingDescription && !checkIfDescriptionExists && (checkIfOwner || checkIfTask || checkIfAdmin)"
               class="text left"
               @click="editDescription"
             >
@@ -86,12 +86,12 @@
               v-model="editTaskDescription"
               class="edit-input edit-description"
               maxlength="10000"
-              v-on="listenersDescription"
               @keydown.tab.prevent="tabber($event)"
             />
             <input
               v-if="editingDescription"
               type="submit"
+              class="description-submit-button box-shadow"
               value="Save"
               @click="submitEditDescription"
             />
@@ -129,7 +129,7 @@
 
 <script>
 import { tasksRef } from "../../main";
-import { labelsList, checkboxList } from "../../utils/deletion";
+import { checkboxList } from "../../utils/deletion";
 import CheckboxList from "./CheckboxList";
 import TaskLabelList from "./TaskLabelList";
 import firebase from "firebase/app";
@@ -174,12 +174,6 @@ export default {
     ...mapState(["projects", "users"]),
     asigneeInfo() {
       return this.users.find(x => x.id === this.task.asignee);
-    },
-    listenersDescription() {
-      if (this.inputActive) {
-        return { blur: this.submitEditDescription };
-      }
-      return null;
     },
     listenersName() {
       if (this.inputActive) {
@@ -370,7 +364,6 @@ export default {
               });
             });
           checkboxList(this.task);
-          labelsList(this.task);
           updateTaskHistory(this.$route.params.projectid);
           this.$toasted.global.success({
             message: "Task successfully removed."
@@ -412,6 +405,27 @@ export default {
     background-color: var(--background);
     padding: 30px;
 
+    .description-submit-button {
+      padding: 5px 10px;
+      border: none;
+      color: var(--background);
+      background-color: var(--accent-1);
+      transition: var(--animation-duration);
+    }
+
+    .description-submit-button:hover {
+      transition: var(--animation-duration);
+      background-color: var(--accent-2);
+    }
+
+    .asignee-edit-form {
+      width: 100%;
+
+      input {
+        width: 100%;
+      }
+    }
+
     .description-container {
       margin-top: 30px;
     }
@@ -431,9 +445,9 @@ export default {
       font-weight: 500;
       font-family: monospace;
       font-size: 12px;
+      line-height: 10px !important;
       -moz-tab-size: 2;
       tab-size: 2;
-      line-height: 12px;
       width: 100%;
     }
 
@@ -451,20 +465,22 @@ export default {
       overflow-y: hidden;
       outline: none;
       border: none;
+      border-bottom: 1px solid var(--foreground);
       resize: none;
       -moz-tab-size: 2;
       tab-size: 2;
     }
 
     .task-modal-edit-form {
-      width: 100%;
+      width: calc(100% - 40px);
 
       .edit-input {
-        width: calc(100% - 30px);
+        width: calc(95%);
       }
 
       .edit-description {
         height: max-content;
+        line-height: 20px !important;
       }
     }
 
