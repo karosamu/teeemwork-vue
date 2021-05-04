@@ -463,8 +463,9 @@ body {
   input {
     font-size: 16px;
     color: var(--foreground);
-    background-color: #ffffff00;
+    background-color: #00000000;
     border: none;
+    border-bottom: 1px solid var(--foreground);
     outline: none;
   }
 }

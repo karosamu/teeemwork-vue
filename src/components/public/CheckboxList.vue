@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="checkboxes.length > 0">
     <div class="checkbox-title">
       <div class="icon checkbox"></div>
       Subtasks:

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="labels.length > 0">
     <span class="label-title"
       ><div class="icon label"></div>
       Labels:</span

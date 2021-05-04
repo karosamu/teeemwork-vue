@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="labels.length > 0 || (checkIfOwner || checkIfTask || checkIfAdmin)">
     <span class="label-title"
       ><div class="icon label"></div>
       Labels:</span
@@ -163,6 +163,8 @@ export default {
 }
 
 .custom-select .items {
+  max-height: 300px;
+  overflow: auto;
   width: 300px;
   border-radius: var(--corner-radius);
   position: absolute;
