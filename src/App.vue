@@ -55,7 +55,7 @@ export default {
   --accent-hover: #5d665a;
 
   /* other variables */
-  --animation-duration: 0s;
+  --animation-duration: 0.1s;
   --margin: 10px;
   --padding: 10px;
   --corner-radius: 3px;
