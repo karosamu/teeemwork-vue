@@ -10,7 +10,7 @@
 
           <p @click.stop="editGroup" v-if="!editing" class="group-name">
             {{ group.name }}
-            <span class="task-length">({{ getTaskList.length }})</span>
+            <span class="task-length">({{ showDragLoad.length }})</span>
           </p>
           <form
             @click.stop
@@ -78,8 +78,12 @@
       non-drag-area-selector=".nondrag"
     >
       <Draggable
-        :class="checkIfGroup || checkIfOwner || checkIfAdmin ? '' : 'nondrag'"
-        v-for="task in getTaskList"
+        :class="
+          (checkIfTask || checkIfOwner || checkIfAdmin) && !dragLoading
+            ? ''
+            : 'nondrag'
+        "
+        v-for="task in showDragLoad"
         :key="task.id"
       >
         <Task :task="task" :groupid="group.id" />
@@ -131,6 +135,7 @@ export default {
       newTaskName: "",
       taskName: "",
       tasks: [],
+      loadingTasks: [],
       newOpen: false,
       editing: false,
       editGroupName: "",
@@ -145,8 +150,21 @@ export default {
         this.$refs.groups.scrollHeight > this.$refs.groups.clientHeight;
     });
   },
+  mounted() {
+    this.loadingTasks = this.tasks;
+  },
+  watch: {
+    dragLoading() {
+      if (!this.dragLoading) {
+        this.loadingTasks = this.getTaskList;
+      }
+    }
+  },
   computed: {
-    ...mapState(["search", "projects"]),
+    ...mapState(["search", "projects", "dragLoading"]),
+    showDragLoad() {
+      return this.dragLoading ? this.loadingTasks : this.getTaskList;
+    },
     getSearchResults() {
       return this.$store.getters.getSearch;
     },
@@ -178,6 +196,35 @@ export default {
   },
   methods: {
     onDrop(collection, dropResult) {
+      if (
+        (dropResult.removedIndex !== null || dropResult.addedIndex !== null) &&
+        dropResult.removedIndex !== dropResult.addedIndex
+      ) {
+        this.$store.commit("toggleDragLoad", true);
+        this.loadingTasks = this.loadingTasks.filter(
+          el => el.id !== dropResult.payload.id
+        );
+        if (
+          dropResult.addedIndex !== null &&
+          dropResult.removedIndex !== null
+        ) {
+          this.loadingTasks.splice(
+            dropResult.addedIndex,
+            0,
+            dropResult.payload
+          );
+        }
+        if (
+          dropResult.addedIndex !== null &&
+          dropResult.removedIndex === null
+        ) {
+          this.loadingTasks.splice(
+            dropResult.addedIndex,
+            0,
+            dropResult.payload
+          );
+        }
+      }
       applyDrag(
         collection,
         dropResult,

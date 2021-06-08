@@ -25,7 +25,10 @@
               v-on="listenersName"
             />
           </form>
-          <div v-if="(checkIfOwner || checkIfTask || checkIfAdmin) || task.asignee" class="asignee">
+          <div
+            v-if="checkIfOwner || checkIfTask || checkIfAdmin || task.asignee"
+            class="asignee"
+          >
             <span class="text">Assigned user:</span>
             <div
               @click="editAsigneeClick"
@@ -56,7 +59,15 @@
             </form>
           </div>
         </div>
-        <div v-if="(checkIfOwner || checkIfTask || checkIfAdmin) || checkIfDescriptionExists" class="description-container">
+        <div
+          v-if="
+            checkIfOwner ||
+              checkIfTask ||
+              checkIfAdmin ||
+              checkIfDescriptionExists
+          "
+          class="description-container"
+        >
           <div class="icon description"></div>
           <span class="text">Description</span>
           <div @click="editDescription" class="description-box">
@@ -67,7 +78,11 @@
               >{{ task.description }}
             </code>
             <p
-              v-if="!editingDescription && !checkIfDescriptionExists && (checkIfOwner || checkIfTask || checkIfAdmin)"
+              v-if="
+                !editingDescription &&
+                  !checkIfDescriptionExists &&
+                  (checkIfOwner || checkIfTask || checkIfAdmin)
+              "
               class="text left"
               @click="editDescription"
             >

@@ -1,5 +1,7 @@
 <template>
-  <div v-if="checkboxes.length > 0 || (checkIfOwner || checkIfTask || checkIfAdmin)">
+  <div
+    v-if="checkboxes.length > 0 || checkIfOwner || checkIfTask || checkIfAdmin"
+  >
     <div class="checkbox-title">
       <div class="icon checkbox"></div>
       Subtasks:

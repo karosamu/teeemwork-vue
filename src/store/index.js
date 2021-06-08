@@ -11,12 +11,14 @@ export default new Vuex.Store({
     search: "",
     projects: [],
     users: [],
-    project: []
+    project: [],
+    dragLoading: false
   },
   getters: {
     getLoaded: state => state.loaded,
     getToggled: state => state.toggled,
-    getSearch: state => state.search
+    getSearch: state => state.search,
+    getDragLoading: state => state.dragLoading
   },
   actions: {
     enableLoading({ commit }) {
@@ -63,6 +65,9 @@ export default new Vuex.Store({
     },
     setProjects(state, array) {
       Vue.set(state, "projects", array);
+    },
+    toggleDragLoad(state, dragLoad) {
+      Vue.set(state, "dragLoading", dragLoad);
     },
     ...vuexfireMutations
   }

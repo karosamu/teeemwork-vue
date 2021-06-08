@@ -1,5 +1,8 @@
 <template>
-  <div v-if="(checkIfAdmin || checkIfOwner) || labels.length > 0" class="project-label-list animate box-shadow scrollbar">
+  <div
+    v-if="checkIfAdmin || checkIfOwner || labels.length > 0"
+    class="project-label-list animate box-shadow scrollbar"
+  >
     <div class="text left">
       <div class="module-title">
         <div class="icon label"></div>

@@ -1,5 +1,6 @@
 import { groupsRef, tasksRef } from "../main";
 import firebase from "firebase/app";
+import store from "../store";
 
 export const applyDrag = (arr, dragResult, targetObject) => {
   const { removedIndex, addedIndex, payload } = dragResult;
@@ -8,9 +9,6 @@ export const applyDrag = (arr, dragResult, targetObject) => {
     addedIndex !== null &&
     removedIndex !== addedIndex
   ) {
-    tasksRef.doc(payload.id).update({
-      group: ""
-    });
     if (addedIndex > removedIndex) {
       tasksRef
         .where("group", "==", payload.group)
@@ -23,14 +21,20 @@ export const applyDrag = (arr, dragResult, targetObject) => {
               order: firebase.firestore.FieldValue.increment(1)
             });
           });
-          tasksRef.doc(payload.id).update({
-            order: targetObject.order,
-            group: payload.group
-          });
+          tasksRef
+            .doc(payload.id)
+            .update({
+              order: targetObject.order,
+              group: payload.group
+            })
+            .then(() => {
+              store.commit("toggleDragLoad", false);
+            });
         })
         .catch(error => {
           this.$toasted.global.error({ message: error });
         });
+      return;
     } else {
       tasksRef
         .where("group", "==", payload.group)
@@ -43,16 +47,23 @@ export const applyDrag = (arr, dragResult, targetObject) => {
               order: firebase.firestore.FieldValue.increment(-1)
             });
           });
-          tasksRef.doc(payload.id).update({
-            order: targetObject.order,
-            group: payload.group
-          });
+          tasksRef
+            .doc(payload.id)
+            .update({
+              order: targetObject.order,
+              group: payload.group
+            })
+            .then(() => {
+              store.commit("toggleDragLoad", false);
+            });
         })
         .catch(error => {
           this.$toasted.global.error({ message: error });
         });
+      return;
     }
-  } else if (removedIndex !== null && addedIndex === null) {
+  }
+  if (removedIndex !== null && addedIndex === null) {
     tasksRef.doc(payload.id).update({
       group: ""
     });
@@ -70,6 +81,7 @@ export const applyDrag = (arr, dragResult, targetObject) => {
       .catch(error => {
         this.$toasted.global.error({ message: error });
       });
+    return;
   } else if (removedIndex === null && addedIndex !== null) {
     if (targetObject) {
       tasksRef
@@ -82,15 +94,20 @@ export const applyDrag = (arr, dragResult, targetObject) => {
               order: firebase.firestore.FieldValue.increment(1)
             });
           });
-          tasksRef.doc(payload.id).update({
-            group: arr.id,
-            order: targetObject.order + 1
-          });
+          tasksRef
+            .doc(payload.id)
+            .update({
+              group: arr.id,
+              order: targetObject.order + 1
+            })
+            .then(() => {
+              store.commit("toggleDragLoad", false);
+            });
         })
         .catch(error => {
           this.$toasted.global.error({ message: error });
         });
-    } else if (!targetObject) {
+    } else {
       tasksRef
         .where("group", "==", arr.id)
         .where("order", ">=", 0)
@@ -98,19 +115,24 @@ export const applyDrag = (arr, dragResult, targetObject) => {
         .then(function(snapshot) {
           snapshot.forEach(task => {
             task.ref.update({
-              order: firebase.firestore.FieldValue.increment(1),
-              group: payload.group
+              order: firebase.firestore.FieldValue.increment(1)
             });
           });
-          tasksRef.doc(payload.id).update({
-            group: arr.id,
-            order: 0
-          });
+          tasksRef
+            .doc(payload.id)
+            .update({
+              group: arr.id,
+              order: 0
+            })
+            .then(() => {
+              store.commit("toggleDragLoad", false);
+            });
         })
         .catch(error => {
           this.$toasted.global.error({ message: error });
         });
     }
+    return;
   }
 };
 
@@ -133,9 +155,14 @@ export const applyDragGroup = (arr, dragResult, targetObject) => {
               order: firebase.firestore.FieldValue.increment(-1)
             });
           });
-          groupsRef.doc(payload.id).update({
-            order: targetObject.order
-          });
+          groupsRef
+            .doc(payload.id)
+            .update({
+              order: targetObject.order
+            })
+            .then(() => {
+              store.commit("toggleDragLoad", false);
+            });
         })
         .catch(error => {
           this.$toasted.global.error({ message: error });
@@ -152,9 +179,14 @@ export const applyDragGroup = (arr, dragResult, targetObject) => {
               order: firebase.firestore.FieldValue.increment(1)
             });
           });
-          groupsRef.doc(payload.id).update({
-            order: targetObject.order
-          });
+          groupsRef
+            .doc(payload.id)
+            .update({
+              order: targetObject.order
+            })
+            .then(() => {
+              store.commit("toggleDragLoad", false);
+            });
         })
         .catch(error => {
           this.$toasted.global.error({ message: error });

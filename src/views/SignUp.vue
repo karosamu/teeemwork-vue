@@ -88,7 +88,7 @@ export default {
   },
   methods: {
     async signUp() {
-      if(this.password === this.passwordConfirm) {
+      if (this.password === this.passwordConfirm) {
         try {
           await firebase
             .auth()
