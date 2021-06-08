@@ -7,13 +7,21 @@
       <p class="text left home-description">
         What is Teeemwork? Teeemwork is an
         <a
-          class="colored-text"
+          class="colored-text link"
           href="https://github.com/karosamu/teeemwork-vue"
           target="_blank"
           >open-source</a
         >
         Kanban-style based project management tool designed to make it easy to
         manage multiple projects with several boards.
+      </p>
+      <p class="text left home-description">
+        Latest changes:
+          <ul>
+            <li>Improved drag&drop by removing the weird animation.</li>
+            <li>Fixed hard-coded security protocol for public board links.</li>
+            <li>Fixed a bug where tasks swap places if task is placed in last place</li>
+          </ul>
       </p>
       <router-link v-if="!checkIfLoggedIn" class="animate" to="/signup"
         >Sign Up</router-link
@@ -47,6 +55,10 @@ export default {
 .home-description {
   margin: 40px;
   line-height: 30px;
+
+  ul {
+    margin-left: 30px;
+  }
 }
 
 .home-container {
@@ -59,6 +71,10 @@ export default {
 .colored-text {
   transition: var(--animation-duration);
   color: var(--accent-1) !important;
+}
+
+.link {
+  text-decoration: underline !important;
 }
 
 .home {
