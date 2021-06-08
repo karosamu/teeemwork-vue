@@ -1,5 +1,5 @@
 <template>
-  <div v-if="labels.length > 0 || (checkIfOwner || checkIfTask || checkIfAdmin)">
+  <div v-if="labels.length > 0 || checkIfOwner || checkIfTask || checkIfAdmin">
     <span class="label-title"
       ><div class="icon label"></div>
       Labels:</span

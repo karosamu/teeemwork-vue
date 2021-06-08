@@ -55,7 +55,7 @@ export default {
   methods: {
     getLink(board) {
       return (
-        'https://' +
+        location.protocol + '//' +
         location.hostname +
         (location.port ? ":" + location.port : "") +
         "/public/" +

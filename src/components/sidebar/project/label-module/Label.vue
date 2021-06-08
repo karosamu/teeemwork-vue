@@ -25,7 +25,7 @@
             @blur="editing = false"
           />
         </form>
-        <div  v-if="checkIfAdmin || checkIfOwner" class="owner-controls">
+        <div v-if="checkIfAdmin || checkIfOwner" class="owner-controls">
           <button class="action-button" @click="deleteLabel">
             <div class="action-icon icon cross animate normal"></div>
           </button>

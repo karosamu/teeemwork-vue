@@ -50,8 +50,12 @@
     >
       <Draggable
         class="draggable-container"
-        :class="checkIfGroup || checkIfOwner || checkIfAdmin ? '' : 'nondrag'"
-        v-for="group in groups"
+        :class="
+          (checkIfGroup || checkIfOwner || checkIfAdmin) && !dragLoading
+            ? ''
+            : 'nondrag'
+        "
+        v-for="group in showDragLoad"
         :key="group.id"
       >
         <Group :group="group" :projectid="projectid" :boardid="boardid" />
@@ -87,13 +91,27 @@ export default {
       newGroupName: "",
       groupName: "",
       groups: [],
+      loadingGroups: [],
       newOpen: false,
       search: "",
       animationSpeed: 50
     };
   },
+  mounted() {
+    this.loadingGroups = this.groups;
+  },
+  watch: {
+    dragLoading() {
+      if (!this.dragLoading) {
+        this.loadingGroups = this.groups;
+      }
+    }
+  },
   computed: {
-    ...mapState(["projects"]),
+    ...mapState(["projects", "dragLoading"]),
+    showDragLoad() {
+      return this.dragLoading ? this.loadingGroups : this.groups;
+    },
     checkIfGroup() {
       return this.project.permGroup.includes(firebase.auth().currentUser.uid);
     },
@@ -114,13 +132,20 @@ export default {
     onDrop(collection, dropResult) {
       if (
         this.project &&
-        (this.checkIfOwner || this.checkIfAdmin || this.checkIfGroup)
+        (this.checkIfOwner || this.checkIfAdmin || this.checkIfGroup) &&
+        (dropResult.removedIndex !== null || dropResult.addedIndex !== null) &&
+        dropResult.removedIndex !== dropResult.addedIndex
       )
-        applyDragGroup(
-          collection,
-          dropResult,
-          this.groups[dropResult.addedIndex]
-        );
+        this.$store.commit("toggleDragLoad", true);
+      this.loadingGroups = this.loadingGroups.filter(
+        el => el.id !== dropResult.payload.id
+      );
+      this.loadingGroups.splice(dropResult.addedIndex, 0, dropResult.payload);
+      applyDragGroup(
+        collection,
+        dropResult,
+        this.groups[dropResult.addedIndex]
+      );
     },
     getChildPayload(index) {
       return this.groups[index];
